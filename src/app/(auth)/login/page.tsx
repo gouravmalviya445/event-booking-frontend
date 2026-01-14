@@ -57,10 +57,11 @@ export default function LoginPage() {
             "Verification email sent successfully"
           )
           router.push("/verify-email");
+          return;
         } catch (error: any) {
           toast.error(
             error?.response?.data?.message ||
-            "Failed to send verification"
+            "Failed to send verification, redirecting..."
           )
         }
       }
