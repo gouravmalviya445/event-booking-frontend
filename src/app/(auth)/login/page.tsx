@@ -11,6 +11,9 @@ import { ENV } from "@/app/env";
 import React from "react";
 import { EyeClosed, EyeIcon, LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { useUserStore } from "@/store/userStore";
+import { apiClient } from "@/lib/apiClient";
 
 interface IFormInputs {
   email: string,
@@ -20,6 +23,7 @@ interface IFormInputs {
 export default function LoginPage() {
   const [showPassword, setShowPassword] = React.useState(false);
   const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
 
   const { handleSubmit, formState: { errors, isSubmitting }, register, reset,  } = useForm<IFormInputs>({
     defaultValues: {
@@ -27,35 +31,56 @@ export default function LoginPage() {
       password: ""
     }
   })
+
   const handleLogin: SubmitHandler<IFormInputs> = async (data) => {
     try {
-      const response = await fetch(`${ENV.API_URL}/api/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
+      const response = await apiClient.post("/api/users/login", data);
+
+      // extract user info from the response body
+      const { data: { user } } = response.data;
+      
+      // store user information
+      setUser({
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        isEmailVerified: user.isEmailVerified
       })
-      if (!response.ok) {
-        const errRes = await response.json();
-        toast.error(errRes.message || "Error user login")
-        return;
+
+      // check if email is verified
+      if (user.isEmailVerified === false) {
+        // send email otp
+        try {
+          const response = await apiClient.post("/api/auth/email/send");
+          toast.success(
+            response.data.message ||
+            "Verification email sent successfully"
+          )
+          router.push("/verify-email");
+        } catch (error: any) {
+          toast.error(
+            error?.response?.data?.message ||
+            "Failed to send verification"
+          )
+        }
       }
-
-      const resJson = await response.json();
+      
+      router.push(`/dashboard/${user.role}`);
       toast.success("User logged in successfully")
-      router.push("/");
       reset();
-    } catch (error) {
-      toast.error("Failed to login, something is broke internally")
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message ||
+        "Failed to login, something is broke internally"
+      )
     }
-
   }
 
-  
-
   return (
-    <Card className="w-full max-w-sm shadow-xl dark:shadow-2xl">
+    <Card className={cn(
+      "w-full max-w-md",
+      "shadow-[0_20px_50px] dark:shadow-black/40 shadow-blue-300"
+    )}>
 
       {/* Header Section */}
       <CardHeader className="space-y-4 text-center">
@@ -69,14 +94,17 @@ export default function LoginPage() {
 
       {/* Form Section */}
       <CardContent>
-        <form className="space-y-4" action="#" onSubmit={handleSubmit(handleLogin)}>
-
+        <form
+          className="space-y-4"
+          onSubmit={handleSubmit(handleLogin)}
+        >
           {/* Email Field */}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
+              className="border border-black/20 dark:border-input"
               placeholder="you@example.com"
               {...register("email", {
                 required: { value: true, message: "Email is required" },
@@ -106,6 +134,7 @@ export default function LoginPage() {
             <div className="relative">
               <Input
                 id="password"
+                className="border dark:border-input border-black/20"
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 placeholder="••••••••"
@@ -140,14 +169,22 @@ export default function LoginPage() {
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full bg-gray-200 hover:bg-gray-300 cursor-pointer"
+            disabled={isSubmitting}
+            className={cn(
+              "w-full mt-0.5 cursor-pointer",
+              "dark:bg-gray-200 dark:hover:bg-gray-300 ",
+              "bg-blue-500 hover:bg-blue-600"
+            )}
           >
             {isSubmitting ? <LoaderIcon className="animate-spin size-5"/>: "Login into account"}
           </Button>
         </form>
         <p className="text-sm text-muted-foreground mt-4 text-center">
           Don't have an account?{" "}
-          <Link href="/register" className="font-semibold text-blue-500 hover:text-blue-600">
+          <Link href="/register" className={cn(
+            "font-semibold dark:text-blue-400 hover:underline",
+            "text-blue-500"
+          )}>
             Register
           </Link>
         </p>
