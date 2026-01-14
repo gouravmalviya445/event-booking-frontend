@@ -1,7 +1,7 @@
 import React from "react";
 
 export function OtpResendTimer({ isOtpSent, setIsOtpSent }: {isOtpSent: boolean, setIsOtpSent: React.Dispatch<React.SetStateAction<boolean>>}) {
-  const [timeLeft, setTimeLeft] = React.useState(15);
+  const [timeLeft, setTimeLeft] = React.useState(30);
 
   React.useEffect(() => {
     if (timeLeft <= 0) {
