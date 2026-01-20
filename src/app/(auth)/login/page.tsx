@@ -66,7 +66,7 @@ export default function LoginPage() {
         }
       }
       
-      router.push(`/dashboard/${user.role}`);
+      router.push(`/dashboard`);
       toast.success("User logged in successfully")
       reset();
     } catch (error: any) {
@@ -80,7 +80,7 @@ export default function LoginPage() {
   return (
     <Card className={cn(
       "w-full max-w-md",
-      "shadow-[0_20px_50px] dark:shadow-black/40 shadow-blue-300"
+      "border border-black dark:border-input"
     )}>
 
       {/* Header Section */}

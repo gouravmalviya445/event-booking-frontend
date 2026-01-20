@@ -80,7 +80,7 @@ export default function LoginPage() {
   return (
     <Card className={cn(
       "w-full max-w-125",
-      "shadow-[0_20px_50px] dark:shadow-black/40 shadow-blue-300"
+      "border border-black dark:border-input"
     )}>
 
       {/* Header Section */}

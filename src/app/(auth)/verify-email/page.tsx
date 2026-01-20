@@ -50,7 +50,7 @@ export default function OTPVerificationPage() {
 
       updateIsEmailVerified();
 
-      router.push(`/dashboard/${user?.role}`)
+      router.push(`/dashboard`)
     } catch (error: any) {
       toast.error(
         error?.response?.data?.message ||
@@ -84,12 +84,12 @@ export default function OTPVerificationPage() {
   useEffect(() => {
     console.log(user)
     if (user?.isEmailVerified) {
-      router.push(`/dashboard/${user?.role}`)
+      router.push(`/dashboard`)
     }
   }, [user, router])
   
   return (
-    <Card className="w-full max-w-90">
+    <Card className="w-full max-w-90 border border-black">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center">
           Verification Required
@@ -112,12 +112,12 @@ export default function OTPVerificationPage() {
               onChange={(e) => setValue("otp", e)}
             >
               <InputOTPGroup >
-                <InputOTPSlot className="sm:size-12" index={0} />
-                <InputOTPSlot className="sm:size-12" index={1} />
-                <InputOTPSlot className="sm:size-12" index={2} />
-                <InputOTPSlot className="sm:size-12" index={3} />
-                <InputOTPSlot className="sm:size-12" index={4} />
-                <InputOTPSlot className="sm:size-12" index={5} />
+                <InputOTPSlot className="dark:border-input border-black/30 sm:size-12" index={0} />
+                <InputOTPSlot className="dark:border-input border-black/30 sm:size-12" index={1} />
+                <InputOTPSlot className="dark:border-input border-black/30 sm:size-12" index={2} />
+                <InputOTPSlot className="dark:border-input border-black/30 sm:size-12" index={3} />
+                <InputOTPSlot className="dark:border-input border-black/30 sm:size-12" index={4} />
+                <InputOTPSlot className="dark:border-input border-black/30 sm:size-12" index={5} />
               </InputOTPGroup>
 
             </InputOTP>

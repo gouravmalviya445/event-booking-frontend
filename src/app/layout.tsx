@@ -24,12 +24,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={
+          `${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden dark:bg-[#222]`
+        }
       >
-        {children}
-        <Toaster />
+        <div className="sm:mx-5 lg:mx-auto max-w-screen-2xl">
+          {children}
+          <Toaster />
+        </div>
       </body>
     </html>
   );
