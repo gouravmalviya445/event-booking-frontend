@@ -8,7 +8,7 @@ export function proxy(req: NextRequest) {
   // get the path 
   const path = req.nextUrl.pathname;
   const isAuthPage = path === "/login" || path === "/register";
-  const isProtectedPage = path.startsWith("/dashboard")
+  const isProtectedPage = path.startsWith("/dashboard") || path === "verify-email"
 
   // redirect to home if logged in
   if (token && isAuthPage) {
