@@ -86,7 +86,7 @@ export function Navbar() {
                   variant="link"
                   className={cn(
                     "text-base",
-                    path === "dashboard" && "bg-muted font-bold"
+                    path === "/dashboard" && "bg-muted font-bold"
                   )}
                 >
                   Dashboard
@@ -200,10 +200,10 @@ function MobileNav() {
                 {isLoggedIn && (
                   <Link href={"/dashboard"}>
                     <Button
-                      variant="link"
+                      variant="ghost"
                       className={cn(
                         "w-full justify-start text-base",
-                        path === "dashboard" && "bg-muted font-bold"
+                        path === "/dashboard" && "bg-muted font-bold"
                       )}
                     >
                       Dashboard
