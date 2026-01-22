@@ -30,7 +30,7 @@ export default function RootLayout({
           `${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden dark:bg-[#222]`
         }
       >
-        <div className="sm:mx-5 lg:mx-auto max-w-screen-2xl">
+        <div className="mx-5 lg:mx-auto max-w-7xl">
           {children}
           <Toaster />
         </div>
