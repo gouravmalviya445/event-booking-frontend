@@ -139,6 +139,7 @@ export default function Events() {
            <SkeletonCard key={i}/>
           )) : data?.map((event: Event) => (
             <EventCard
+              eventId={event._id}
               key={event._id}
               title={event.title}
               description={event.description}

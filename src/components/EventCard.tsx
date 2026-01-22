@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface EventCardProps {
+  eventId: string;
   title: string;
   description: string;
   location: string;
@@ -24,7 +25,8 @@ interface EventCardProps {
   organizer: string;
 }
 
-export function EventCard({ 
+export function EventCard({
+  eventId,
   title, 
   description, 
   location, 
@@ -115,7 +117,9 @@ export function EventCard({
         </div>
         <div className="flex items-center gap-2">
           <Button className="h-8 text-xs px-4 text-black bg-transparent border border-black/20 hover:bg-black/10" size="sm">
-            <Link href={`/events/${title.toLowerCase().split(" ").join("-")}`}>
+            <Link href={
+              `/explore/events/${eventId}`
+            }>
               View Details
             </Link>
           </Button>
