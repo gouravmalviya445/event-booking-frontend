@@ -58,7 +58,6 @@ export default function EventPage({ params }: { params: Promise<{ slug: string }
   
   // Local state for booking interaction
   const [ticketCount, setTicketCount] = useState(1);
-  const [isBooking, setIsBooking] = useState(false);
 
   // SWR
   const { data: event, isLoading, error } = useSWR<EventData>(`/api/events/${slug}`, async (url: string) => {
@@ -282,15 +281,10 @@ export default function EventPage({ params }: { params: Promise<{ slug: string }
 
                     <Button 
                         className="w-full h-11 text-base font-semibold shadow-md" 
-                        disabled={isCancelled || isSoldOut || isBooking}
+                        disabled={isCancelled || isSoldOut}
                         onClick={handleBookTicket}
                     >
-                        {isBooking ? (
-                            <>
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Processing...
-                            </>
-                        ) : isCancelled ? (
+                        {isCancelled ? (
                             "Unavailable"
                         ) : isSoldOut ? (
                             "Sold Out"
