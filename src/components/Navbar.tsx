@@ -30,7 +30,7 @@ const NAV_ITEMS = [
 ]
 
 export function Navbar() {
-  const { verifyAuth, isLoggedIn, logoutUser } = useUserStore();
+  const { verifyAuth, isLoggedIn } = useUserStore();
   const path = usePathname();
 
   useEffect(() => {
