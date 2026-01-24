@@ -57,7 +57,7 @@ export const useUserStore = create<UserStore>()(
       verifyAuth: async () => {
         try {
           const { data: { data: {user} } } = await apiClient.get("/api/users/current-user");
-          
+          console.log("user", user)
           set({
             user: {
               email: user.email,
@@ -68,6 +68,11 @@ export const useUserStore = create<UserStore>()(
             isLoggedIn: true
           });
         } catch (error: any) {
+          if (error?.response?.status === 401) {
+            toast.error(error?.response?.data?.message || "Please login to continue");
+            set({ user: null, isLoggedIn: false });
+            return;
+          }
           toast.error(error?.response?.data?.message || "Please login to continue");
           set({ user: null, isLoggedIn: false });
         }
