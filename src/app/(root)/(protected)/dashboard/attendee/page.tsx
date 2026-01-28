@@ -6,7 +6,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Calendar, IndianRupee, ShoppingBag, Ticket, TrendingUp, Clock, AlertCircle } from "lucide-react"
 import useSWR from "swr"
 import { apiClient } from "@/lib/apiClient"
-import { cn } from "@/lib/utils"
+import { formatCurrency, formatDate } from "@/lib/utils"
+import { StatCard } from "@/components/StatCard"
+import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
 
 // Types
 type Response = {
@@ -20,19 +23,12 @@ type Response = {
     createdAt: Date,
     event: {
       date: Date,
-      category: string
-      // Note: If your API returns an event title, add it here. 
-      // I'm using 'category' as the primary display for now.
+      category: string,
+      price: number,
+      title: string,
     }
   }]
 }
-
-// Formatters
-const formatCurrency = (amount: number) => 
-  new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(amount)
-
-const formatDate = (date: Date) => 
-  new Date(date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
 
 export default function AttendeeDashboard() {
   const { data, isLoading } = useSWR<Response>("/api/users/attendee", async (url: string) => {
@@ -49,10 +45,12 @@ export default function AttendeeDashboard() {
           <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
           <p className="text-muted-foreground mt-1">Overview of your tickets and events.</p>
         </div>
-        <Button className="hidden md:flex">Browse Events</Button>
+        <Link href="/explore/events">
+          <Button className="hidden md:flex">Browse Events</Button>
+        </Link>
       </div>
 
-      {/* KPI Stats Grid */}
+      {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard 
           title="Total Purchases" 
@@ -100,7 +98,7 @@ export default function AttendeeDashboard() {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/10 hover:bg-muted/10">
-                <TableHead className="pl-6">Event Category</TableHead>
+                <TableHead className="pl-6">Event Name</TableHead>
                 <TableHead>Event Date</TableHead>
                 <TableHead>Tickets</TableHead>
                 <TableHead>Amount</TableHead>
@@ -133,7 +131,9 @@ export default function AttendeeDashboard() {
                         <p className="font-medium text-lg">No tickets found</p>
                         <p className="text-sm text-muted-foreground">You haven't purchased any tickets yet.</p>
                       </div>
-                      <Button variant="outline" className="mt-4">Find Events</Button>
+                        <Link href="/explore/events">
+                          <Button variant="outline" className="mt-4">Find Events</Button>
+                        </Link>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -147,7 +147,7 @@ export default function AttendeeDashboard() {
                     <TableRow key={booking._id} className="group">
                       <TableCell className="font-medium pl-6">
                         <div className="flex items-center gap-2">
-                           <span className="capitalize">{booking.event.category}</span>
+                           <span className="capitalize">{booking.event.title}</span>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -163,19 +163,19 @@ export default function AttendeeDashboard() {
                         </div>
                       </TableCell>
                       <TableCell className="font-medium">
-                        {formatCurrency(booking.totalPrice)}
+                        {formatCurrency(booking.tickets * booking.event.price)}
                       </TableCell>
                       <TableCell className="text-muted-foreground text-sm">
                         {formatDate(booking.createdAt)}
                       </TableCell>
                       <TableCell className="text-right pr-6">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border
+                        <Badge className={`
                           ${isPast 
-                            ? "bg-slate-100 text-slate-800 border-slate-200" 
-                            : "bg-green-100 text-green-800 border-green-200"
+                            ? "bg-slate-300 text-slate-800 border-slate-200" 
+                            : "bg-green-300 text-green-800 border-green-200"
                           }`}>
                           {isPast ? "Completed" : "Upcoming"}
-                        </span>
+                        </Badge>
                       </TableCell>
                     </TableRow>
                   )
@@ -186,54 +186,5 @@ export default function AttendeeDashboard() {
         </CardContent>
       </Card>
     </div>
-  )
-}
-
-// Reusable Stat Component for cleaner code
-function StatCard({ 
-  title, 
-  icon, 
-  value, 
-  isLoading, 
-  subtext, 
-  isCurrency = false,
-  bgClass,
-  className="",
-}: { 
-  title: string, 
-  icon: React.ReactNode, 
-  value?: number, 
-  isLoading: boolean, 
-  subtext?: string,
-  isCurrency?: boolean,
-  bgClass?: string
-  className?: string
-}) {
-  return (
-    <Card className={cn(
-      "overflow-hidden border-none shadow-sm ring-1",
-      className 
-    )}>
-      <CardContent className="p-6">
-        <div className="flex items-center gap-4">
-          <div className={`p-3 rounded-xl ${bgClass}`}>
-            {icon}
-          </div>
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            {isLoading ? (
-              <div className="h-7 w-20 bg-slate-300 animate-pulse rounded-full" />
-            ) : (
-              <div className="flex items-baseline gap-2">
-                <h3 className="text-2xl font-bold tracking-tight">
-                  {isCurrency && value ? formatCurrency(value) : value ?? 0}
-                </h3>
-              </div>
-            )}
-            {subtext && <p className="text-xs text-muted-foreground">{subtext}</p>}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
   )
 }
