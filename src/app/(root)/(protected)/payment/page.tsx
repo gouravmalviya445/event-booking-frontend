@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { CheckCircle2, XCircle, Clock, RotateCcw, AlertCircle, Loader2, ArrowLeft } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"; // Assuming shadcn path
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 type Booking = {
   status: "expired" | "pending" | "success" | "refunded" | "failed";
@@ -27,6 +28,14 @@ export default function PaymentStatus() {
       refreshInterval: 3000
     }
   );
+
+  if (booking?.status === "success") {
+    try {
+      apiClient.post("/api/bookings/send-email", { orderId })
+    } catch (error) {
+      toast.error("Failed to send payment confirmation email")
+    }
+  }
 
   // Helper to determine UI content based on status
   const getStatusConfig = (status: Booking["status"]) => {
