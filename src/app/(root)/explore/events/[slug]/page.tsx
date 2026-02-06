@@ -114,6 +114,21 @@ export default function EventPage({ params }: { params: Promise<{ slug: string }
       router.push("/verify-email");
       return;
     }
+
+    if (isSoldOut) {
+      toast.error("This event is sold out. You can't book more tickets.");
+      return;
+    }
+
+    if (isCancelled) {
+      toast.error("This event has been cancelled. You can't book tickets.");
+      return;
+    }
+
+    if (eventDate < new Date()) {
+      toast.error("This event has already happened. You can't book tickets.");
+      return;
+    }
     
     // load razorpay script
     const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");

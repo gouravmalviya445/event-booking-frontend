@@ -171,7 +171,7 @@ export default function LoginPage() {
                     message: "Password is too short it must be 6 characters"
                   },
                   pattern: {
-                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+=\[\]{}|;:,.<>?~`-]{6,}$/,
                     message: `password is too weak it must be combination of letter and digits with no spaces`
                   }
                 })}

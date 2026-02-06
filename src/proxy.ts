@@ -8,7 +8,11 @@ export function proxy(req: NextRequest) {
   // get the path 
   const path = req.nextUrl.pathname;
   const isAuthPage = path === "/login" || path === "/register";
-  const isProtectedPage = path.startsWith("/dashboard") || path === "verify-email" || path.startsWith("/payment")
+  const isProtectedPage =
+    path.startsWith("/dashboard") ||
+    path.startsWith("/payment") ||
+    path.startsWith("/events") ||
+    path === "/verify-email";
 
   // redirect to dashboard if logged in
   if (token && isAuthPage) {
@@ -16,7 +20,7 @@ export function proxy(req: NextRequest) {
   }
 
   // redirect to dashboard if user logged in 
-  console.log("path", path)
+  // console.log("path", path)
   if (token && path === "/") {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
@@ -33,6 +37,7 @@ export function proxy(req: NextRequest) {
 export const config = {
   matcher: [
     "/dashboard/:path*",
+    "/events/:path*",
     "/login",
     "/register",
     "/verify-email",

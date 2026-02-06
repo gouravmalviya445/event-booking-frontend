@@ -18,7 +18,7 @@ export default function PaymentStatus() {
   const orderId = searchParams.get("orderId");
 
   const { data: booking, isLoading, error } = useSWR<Booking>(
-    orderId ? `/api/bookings?orderId=${orderId}` : null,
+    orderId ? `/api/bookings/${orderId}` : null,
     async (url: string) => {
       const { data: { data } } = await apiClient.get(url);
       return data;
