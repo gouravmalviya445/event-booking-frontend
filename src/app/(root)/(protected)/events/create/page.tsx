@@ -1,9 +1,9 @@
 "use client"
 
-import React from "react";
+import React, { Activity } from "react";
 import { useForm, Controller } from "react-hook-form"
-import { format } from "date-fns"
-import { CalendarIcon, Loader2 } from "lucide-react"
+import { format, set } from "date-fns"
+import { CalendarIcon, Loader2, Router, Trash2, UploadIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -24,6 +24,11 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { apiClient } from "@/lib/apiClient";
+import { CldUploadWidget } from 'next-cloudinary';
+import { ENV } from "@/app/env";
+import Image from "next/image";
 
 type EventFormValues = {
   title: string
@@ -37,6 +42,8 @@ type EventFormValues = {
 
 export default function CreateEventForm() {
   const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [eventUrl, setEventUrl] = React.useState("")
+  const router = useRouter();
 
   // Initialize React Hook Form without resolver
   const {
@@ -44,6 +51,7 @@ export default function CreateEventForm() {
     control,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm<EventFormValues>({
     defaultValues: {
       title: "",
@@ -55,11 +63,25 @@ export default function CreateEventForm() {
   })
 
   const onSubmit = async (data: EventFormValues) => {
-    setIsSubmitting(true)
-    console.log("Submitting Event Data:", data)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsSubmitting(false)
+    try {
+      setIsSubmitting(true)
+      if (!eventUrl.trim()) {
+        return toast.error("Event image is required")
+      }
+      const { data: { data: { event } } } = await apiClient.post("/api/events/create", {
+        ...data,
+        image:eventUrl
+      })
+      console.log("data", event)
+
+      toast.success("Event created successfully")
+      router.push(`/explore/events/${event._id}`);
+      reset();
+    } catch (apiError: any) {
+      toast.error(apiError?.response?.data?.message || "Failed to create event")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -225,6 +247,50 @@ export default function CreateEventForm() {
           )}
         </div>
 
+        <div className="space-y-2">
+          <Label>Event Image</Label>
+          <Activity mode={ eventUrl ? "hidden" : "visible" }>
+            <CldUploadWidget
+              onSuccess={(result) => {
+                if (typeof result.info === "string") {
+                  toast.error(result.info || "Failed to upload image")
+                } else {
+                  setEventUrl(result?.info?.secure_url as string);
+                }
+              }}
+              uploadPreset={ENV.cldUploadPreset}
+              >
+              {({ open }) => {
+                return (
+                  <Button
+                    className="w-full justify-start text-left font-normal"
+                    variant={"outline"}
+                    type="button"
+                    onClick={() => open()}
+                    disabled={isSubmitting}
+                  >
+                    <UploadIcon className="mr-2 h-4 w-4"/> Upload Event Image
+                  </Button>
+                )
+              }}
+            </CldUploadWidget>
+          </Activity>
+          <Activity mode={eventUrl ? "visible" : "hidden"}>
+            <div className="h-25 w-40 ring-1 ring-black/20 rounded-md relative p-2">
+              <Image
+                src={eventUrl} alt="Event Image" width={100} height={150}
+                className="rounded-md h-full w-full" />
+              <Button
+                onClick={() => setEventUrl("")}
+                type="button" variant={"destructive"}
+                className="rounded-full absolute -top-5 -right-5"
+              >
+                <Trash2 />
+              </Button>
+            </div>
+          </Activity>
+        </div>
+        
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
             <>

@@ -296,7 +296,7 @@ export default function EventPage({ params }: { params: Promise<{ slug: string }
 
                     <Button 
                         className="w-full h-11 text-base font-semibold shadow-md" 
-                        disabled={isCancelled || isSoldOut}
+                        disabled={isCancelled || isSoldOut || eventDate < new Date()}
                         onClick={handleBookTicket}
                     >
                         {isCancelled ? (
@@ -304,7 +304,7 @@ export default function EventPage({ params }: { params: Promise<{ slug: string }
                         ) : isSoldOut ? (
                             "Sold Out"
                         ) : (
-                            <>
+                            eventDate < new Date() ? "Event has already done" : <>
                                 <Ticket className="mr-2 h-4 w-4" />
                                 Book Ticket
                             </>

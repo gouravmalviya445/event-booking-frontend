@@ -38,7 +38,7 @@ const categories: Category[] = ["all", "sport", "business", "tech", "music", "ar
 
 export default function Events() {
   const [search, setSearch] = useState("");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("date-asc");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("date-desc");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   const searchQuery = useDebounce(search, 500);

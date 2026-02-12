@@ -72,6 +72,11 @@ export function EventCard({
             <p className="text-sm text-white">Cancelled</p>
           </div>
         )}
+        {formattedDate < new Date() && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+            <p className="text-sm text-white">Event Expired</p>
+          </div>
+        )}
       </div>
 
       {/* Tighter Content Area */}

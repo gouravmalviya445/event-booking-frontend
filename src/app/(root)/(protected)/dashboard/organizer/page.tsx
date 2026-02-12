@@ -11,7 +11,6 @@ import { StatCard } from "@/components/StatCard"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useUserStore } from "@/store/userStore"
 import { toast } from "sonner"
 
 // Types adapted for Organizer
@@ -160,7 +159,7 @@ export default function OrganizerDashboard() {
                     <TableRow key={event._id} className="group cursor-pointer hover:bg-muted/5 transition-colors">
                       <TableCell className="font-medium pl-6">
                         <div className="flex flex-col">
-                           <span className="text-base">{event.title}</span>
+                           <Link href={`/explore/events/${event._id}`} className="text-base hover:text-blue-500 hover:underline">{event.title}</Link>
                            <span className="text-xs text-muted-foreground font-normal">ID: {event._id.slice(-6).toUpperCase()}</span>
                         </div>
                       </TableCell>

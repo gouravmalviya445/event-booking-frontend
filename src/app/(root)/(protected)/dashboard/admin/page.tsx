@@ -22,6 +22,8 @@ import {
   Trash2,
   Mail
 } from "lucide-react"
+import Link from "next/link"
+import { useUserStore } from "@/store/userStore"
 
 type AdminUser = {
   _id: string
@@ -42,6 +44,7 @@ type AdminResponse = {
 export default function AdminDashboard() {
   const router = useRouter()
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const user = useUserStore(state => state.user)
 
   // fetch admin dashboard data
   const { data, isLoading, error, mutate } = useSWR<AdminResponse>("/api/users", async (url: string) => {
@@ -92,7 +95,16 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-8 p-8 max-w-7xl mx-auto">
+    <div className="space-y-8 p-8 max-w-7xl mx-auto relative">
+      {user?.isEmailVerified == false && (
+        <Button variant="secondary" className="flex border border-black/20 text-xs gap-2 py-2 px-3 absolute top-0 right-4">
+          <Link href="/verify-email" className="flex items-center gap-2">
+            <Mail className="h-4 w-4 text-blue-600" />
+            Verify Your Email
+          </Link>
+        </Button>
+      )}
+      
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -163,7 +175,7 @@ export default function AdminDashboard() {
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-muted-foreground">Total Earnings</p>
-                <p className="text-2xl font-bold tracking-tight">{bookingResponse?.totalEarnings}</p>
+                <p className="text-2xl font-bold tracking-tight">{bookingResponse?.totalEarnings || 0}</p>
                 <p className="text-xs text-muted-foreground">Connect bookings analytics to populate</p>
               </div>
             </div>
@@ -173,7 +185,7 @@ export default function AdminDashboard() {
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-medium text-muted-foreground">Total Purchases</p>
-                <p className="text-2xl font-bold tracking-tight">{bookingResponse?.totalPurchases}</p>
+                <p className="text-2xl font-bold tracking-tight">{bookingResponse?.totalPurchases || 0}</p>
                 <p className="text-xs text-muted-foreground">Available once booking stats are exposed</p>
               </div>
             </div>
