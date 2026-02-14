@@ -3,20 +3,24 @@
 import { apiClient } from "@/lib/apiClient";
 import { useSearchParams, useRouter } from "next/navigation";
 import useSWR from "swr";
-import { CheckCircle2, XCircle, Clock, RotateCcw, AlertCircle, Loader2, ArrowLeft } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, RotateCcw, AlertCircle, Loader2 } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"; // Assuming shadcn path
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { use } from "react";
 
 type Booking = {
   status: "expired" | "pending" | "success" | "refunded" | "failed";
   amount?: number; // Optional: display amount if available
 };
 
-export default function PaymentStatus() {
-  const searchParams = useSearchParams();
+export default function PaymentStatus({
+  searchParams,
+}: {
+  searchParams: Promise<{orderId: string}>
+}) {
   const router = useRouter();
-  const orderId = searchParams.get("orderId");
+  const { orderId } = use(searchParams);
 
   const { data: booking, isLoading, error } = useSWR<Booking>(
     orderId ? `/api/bookings/${orderId}` : null,
