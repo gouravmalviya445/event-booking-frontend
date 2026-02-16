@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { ENV } from "@/app/env";
 import React from "react";
 import { EyeClosed, EyeIcon, LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -58,7 +57,7 @@ export default function LoginPage() {
           )
           router.push("/verify-email");
           return;
-        } catch (error: any) {
+        } catch (error: any) {   
           toast.error(
             error?.response?.data?.message ||
             "Failed to send verification, redirecting..."

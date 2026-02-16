@@ -6,15 +6,15 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Dashboard() {
-  const role = useUserStore(state => state.user?.role);
+  const user = useUserStore(state => state.user);
   const router = useRouter();
   useEffect(() => { 
-    if (!role) {
-      router.push(`/dashboard/${role}`)
+    if (user != null) {
+      router.push(`/dashboard/${user.role}`)
       return;
     }
     router.push("/");
-  }, [role])
+  }, [user])
   
   return (
     <div className="text-center"><Spinner /></div>
