@@ -12,13 +12,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { 
-  Users, 
-  ShieldCheck, 
-  Shield, 
-  UserCog, 
-  IndianRupee, 
-  ShoppingBag, 
+import {
+  Users,
+  ShieldCheck,
+  Shield,
+  UserCog,
+  IndianRupee,
+  ShoppingBag,
   Trash2,
   Mail
 } from "lucide-react"

@@ -1,84 +1,161 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Calendar, Users, Ticket, ArrowRight } from "lucide-react"
+import { Calendar, Users, Ticket, ArrowRight, Sparkles, MapPin, Star } from "lucide-react"
+
+const highlights = [
+  "Live music nights",
+  "City food pop-ups",
+  "Creative workshops",
+]
+
+const features = [
+  {
+    icon: Calendar,
+    title: "Curated experiences",
+    text: "Discover thoughtful events that match your mood, city, and schedule.",
+  },
+  {
+    icon: Ticket,
+    title: "Fast booking",
+    text: "Reserve your spot in a few clicks without the usual friction.",
+  },
+  {
+    icon: Users,
+    title: "Built for communities",
+    text: "Create memorable moments for guests, organizers, and local creators.",
+  },
+]
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative py-20 md:py-32 overflow-hidden border-b">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-primary/10 -z-10" />
-          <div className="container mx-auto px-4 relative">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-balance text-foreground">
-                Discover & Book
-                <span className="text-primary"> Amazing Events</span>
-              </h1>
-              <p className="mt-6 text-lg md:text-xl text-muted-foreground text-pretty max-w-2xl mx-auto">
-                Your one-stop platform for discovering, booking, and managing events. Whether you're an attendee or
-                organizer, we've got you covered.
-              </p>
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button size="lg" asChild className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600">
-                  <Link href="/explore/events">
-                    Browse Events
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" asChild className="w-full sm:w-auto">
-                  <Link href="/register">Create Account</Link>
-                </Button>
+    <div className="min-h-screen flex flex-col text-stone-900">
+      <main className="flex-1 pb-16">
+        <section className="relative overflow-hidden py-14 md:py-20">
+          <div className="mx-auto max-w-6xl px-4 md:px-6">
+            <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="relative z-10">
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white/70 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-stone-600 shadow-sm backdrop-blur-sm">
+                  <Sparkles className="h-3.5 w-3.5 text-amber-600" />
+                  curated local moments
+                </div>
+
+                <h1 className="max-w-xl text-5xl font-semibold tracking-[-0.08em] text-stone-900 md:text-6xl">
+                  Find your next
+                  <span className="block text-stone-600">great night out.</span>
+                </h1>
+
+                <p className="mt-6 max-w-lg text-lg leading-8 text-stone-600">
+                  Explore handpicked events, book tickets in seconds, and bring people together around experiences that actually feel worth showing up for.
+                </p>
+
+                <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row">
+                  <Button size="lg" asChild className="rounded-full bg-stone-900 px-6 text-white hover:bg-stone-800">
+                    <Link href="/explore/events" className="inline-flex items-center gap-2">
+                      Browse events
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button size="lg" variant="outline" asChild className="rounded-full border-stone-300 bg-white/70 px-6 hover:bg-stone-100">
+                    <Link href="/register">Create account</Link>
+                  </Button>
+                </div>
+
+                <div className="mt-8 flex flex-wrap gap-2 text-sm text-stone-600">
+                  {highlights.map((item) => (
+                    <span key={item} className="rounded-full border border-stone-200 bg-white/60 px-3 py-1.5">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="absolute -left-8 top-10 h-52 w-52 rounded-full bg-amber-200/50 blur-3xl" />
+                <div className="absolute -right-6 bottom-4 h-52 w-52 rounded-full bg-orange-200/50 blur-3xl" />
+
+                <div className="relative overflow-hidden rounded-[2rem] border border-stone-200 bg-white/80 p-4 shadow-[0_30px_80px_rgba(80,60,38,0.12)] backdrop-blur-md">
+                  <div className="overflow-hidden rounded-[1.5rem] bg-stone-200">
+                    <div className="h-56 bg-[linear-gradient(135deg,#2a241f_0%,#7d6252_40%,#d7c0a6_100%)] p-5 text-white">
+                      <div className="flex items-center justify-between text-xs uppercase tracking-[0.18em] text-white/75">
+                        <span>Weekend pick</span>
+                        <span className="rounded-full border border-white/20 bg-white/10 px-2 py-1">Live</span>
+                      </div>
+
+                      <div className="mt-16 space-y-2">
+                        <p className="text-2xl font-semibold tracking-[-0.06em]">Sunset Sessions</p>
+                        <div className="flex items-center gap-2 text-sm text-white/80">
+                          <MapPin className="h-4 w-4" />
+                          Riverside Deck, Bengaluru
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
+                      <p className="text-xs uppercase tracking-[0.18em] text-stone-500">Tickets</p>
+                      <p className="mt-2 text-2xl font-semibold tracking-[-0.06em]">₹899</p>
+                    </div>
+                    <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
+                      <p className="text-xs uppercase tracking-[0.18em] text-stone-500">Rating</p>
+                      <div className="mt-2 flex items-center gap-2 text-2xl font-semibold tracking-[-0.06em]">
+                        4.9
+                        <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Feature 1 */}
-              <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl border shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary">
-                  <Calendar className="h-6 w-6" />
+        <section className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-16">
+          <div className="mb-8 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.22em] text-stone-500">Why Gatherly</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.06em] text-stone-900 md:text-4xl">
+                Thoughtful planning for better nights.
+              </h2>
+            </div>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-3">
+            {features.map(({ icon: Icon, title, text }) => (
+              <div key={title} className="rounded-[1.75rem] border border-stone-200 bg-white/70 p-6 shadow-[0_18px_50px_rgba(80,60,38,0.04)]">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-900 text-stone-50">
+                  <Icon className="h-5 w-5" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Discover Events</h3>
-                <p className="text-muted-foreground">
-                  Browse through hundreds of events. Filter by date, price, or search by name.
-                </p>
+                <h3 className="text-xl font-semibold tracking-[-0.04em] text-stone-900">{title}</h3>
+                <p className="mt-3 text-base leading-7 text-stone-600">{text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-16">
+          <div className="rounded-[2rem] border border-stone-200 bg-stone-900 px-6 py-8 text-stone-50 md:px-10 md:py-10">
+            <div className="grid gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-stone-300">For hosts & guests</p>
+                <h3 className="mt-3 text-3xl font-semibold tracking-[-0.06em] md:text-4xl">
+                  Build a memorable event experience from first click to last dance.
+                </h3>
               </div>
 
-              {/* Feature 2 */}
-              <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl border shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary">
-                  <Ticket className="h-6 w-6" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Instant Booking</h3>
-                <p className="text-muted-foreground">
-                  Secure your spot in seconds with our streamlined ticketing and booking system.
-                </p>
-              </div>
-
-              {/* Feature 3 */}
-              <div className="flex flex-col items-center text-center p-6 bg-card rounded-xl border shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary">
-                  <Users className="h-6 w-6" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Organize Events</h3>
-                <p className="text-muted-foreground">
-                  Create and manage your own events. Track sales and attendees effortlessly.
-                </p>
+              <div className="space-y-3 text-stone-200">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">Simple discovery, better ticketing, and cleaner event management.</div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">Designed for real people, not just dashboards and templates.</div>
               </div>
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t py-8 bg-background">
-        <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>Created with ❤️ by <span className="font-semibold text-foreground">Gatherly</span></p>
+      <footer className="border-t border-stone-200/80 py-8">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 text-sm text-stone-600 md:px-6">
+          <p>Gatherly</p>
+          <p>Made for memorable moments.</p>
         </div>
       </footer>
     </div>

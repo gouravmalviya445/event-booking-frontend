@@ -42,15 +42,15 @@ export default function OrganizerDashboard() {
   if (error?.response.status === 401) {
     toast.error(error?.response?.data?.message || "Please login to continue");
     router.push("/login");
-  } 
+  }
   if (error?.response.status === 403) {
     toast.error(error?.response?.data?.message || "You are not authorized to access this page");
     router.push("/");
-  } 
+  }
 
   return (
     <div className="space-y-8 p-8 max-w-7xl mx-auto">
-      
+
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div>
@@ -66,8 +66,8 @@ export default function OrganizerDashboard() {
 
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-3">
-        <StatCard 
-          title="Total Revenue" 
+        <StatCard
+          title="Total Revenue"
           icon={<IndianRupee className="h-5 w-5 text-emerald-600" />}
           value={data?.totalRevenue}
           isCurrency
@@ -76,8 +76,8 @@ export default function OrganizerDashboard() {
           bgClass="bg-emerald-50"
           className="ring-emerald-500/40"
         />
-        <StatCard 
-          title="Tickets Sold" 
+        <StatCard
+          title="Tickets Sold"
           icon={<Users className="h-5 w-5 text-blue-600" />}
           value={data?.totalTicketsSold}
           isLoading={isLoading}
@@ -85,8 +85,8 @@ export default function OrganizerDashboard() {
           bgClass="bg-blue-50"
           className="ring-blue-500/40"
         />
-        <StatCard 
-          title="Active Events" 
+        <StatCard
+          title="Active Events"
           icon={<BarChart3 className="h-5 w-5 text-orange-600" />}
           value={data?.totalActiveEvents}
           isLoading={isLoading}
@@ -152,15 +152,15 @@ export default function OrganizerDashboard() {
                 // Data Rows
                 data.events.map((event) => {
                   const totalTicketsSold = event.totalSeats - event.availableSeats;
-                  const percentage = Math.round(( totalTicketsSold / event.totalSeats) * 100);
+                  const percentage = Math.round((totalTicketsSold / event.totalSeats) * 100);
                   const isFull = totalTicketsSold >= event.totalSeats;
-                  
+
                   return (
                     <TableRow key={event._id} className="group cursor-pointer hover:bg-muted/5 transition-colors">
                       <TableCell className="font-medium pl-6">
                         <div className="flex flex-col">
-                           <Link href={`/explore/events/${event._id}`} className="text-base hover:text-blue-500 hover:underline">{event.title}</Link>
-                           <span className="text-xs text-muted-foreground font-normal">ID: {event._id.slice(-6).toUpperCase()}</span>
+                          <Link href={`/explore/events/${event._id}`} className="text-base hover:text-blue-500 hover:underline">{event.title}</Link>
+                          <span className="text-xs text-muted-foreground font-normal">ID: {event._id.slice(-6).toUpperCase()}</span>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -183,9 +183,9 @@ export default function OrganizerDashboard() {
                           </div>
                           {/* Simple Progress Bar */}
                           <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                            <div 
+                            <div
                               className={`h-full rounded-full transition-all duration-500 ${isFull ? 'bg-red-500' : 'bg-blue-600'}`}
-                              style={{ width: `${percentage}%` }} 
+                              style={{ width: `${percentage}%` }}
                             />
                           </div>
                         </div>
@@ -196,7 +196,7 @@ export default function OrganizerDashboard() {
                       <TableCell className="text-right pr-6">
                         <Badge variant="outline" className={`
                           ${event.status === 'active' && event.date > new Date()
-                            ? "bg-green-50 text-green-700 border-green-200" 
+                            ? "bg-green-50 text-green-700 border-green-200"
                             : "bg-slate-100 text-slate-700 border-slate-200"
                           }`}>
                           {event.status === 'active' && event.date > new Date() ? 'Live' : 'Completed'}

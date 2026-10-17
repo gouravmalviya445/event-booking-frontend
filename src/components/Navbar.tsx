@@ -38,11 +38,9 @@ export function Navbar() {
       if (isLoggedIn) {
         const fiveMinutes = 5 * 60 * 1000;
         const lastVerified = useUserStore.getState().lastVerified;
-        // check if lastVerified is a string or Date object to avoid errors
         const lastVerifiedDate = lastVerified ? new Date(lastVerified) : null;
-        
+
         const shouldReverify = !lastVerifiedDate || (Date.now() - lastVerifiedDate.getTime() > fiveMinutes);
-        console.log("shouldReverify", shouldReverify)
 
         if (shouldReverify) {
           await verifyAuth();
@@ -50,30 +48,27 @@ export function Navbar() {
       }
     };
 
-    verify().then(() => console.log("Verified Auth"));
+    verify();
   }, [])
 
   return (
-    <nav className="bg-white border rounded-xl shadow-xl border-gray-400 sticky my-4 top-0 z-50 px-4">
+    <nav className="sticky top-4 z-50 my-4 rounded-full border border-stone-200/80 bg-[rgba(255,255,255,0.72)] px-4 shadow-[0_10px_30px_rgba(60,40,24,0.08)] backdrop-blur-md">
       <div className="mx-auto">
-        <div className="flex justify-between items-center h-16">
-
-          {/* Logo */}
+        <div className="flex h-16 items-center justify-between gap-4">
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold text-blue-600 tracking-tight">
+            <Link href="/" className="text-xl font-semibold tracking-[-0.06em] text-stone-900">
               Gatherly
             </Link>
           </div>
 
-          {/* --- DESKTOP NAVIGATION (Hidden on Mobile) --- */}
-          <div className="hidden md:flex">
+          <div className="hidden items-center gap-2 md:flex">
             {NAV_ITEMS.map((item) => (
               <Link href={item.href} key={item.href}>
                 <Button
-                  variant="link"
+                  variant="ghost"
                   className={cn(
-                    "text-base",
-                    path === item.href && "bg-muted font-bold"
+                    "rounded-full px-4 text-sm font-medium text-stone-600 hover:text-stone-900",
+                    path === item.href && "bg-stone-900 text-stone-50 hover:bg-stone-800"
                   )}
                 >
                   {item.label}
@@ -83,10 +78,10 @@ export function Navbar() {
             {isLoggedIn && (
               <Link href={"/dashboard"}>
                 <Button
-                  variant="link"
+                  variant="ghost"
                   className={cn(
-                    "text-base",
-                    path === "/dashboard" && "bg-muted font-bold"
+                    "rounded-full px-4 text-sm font-medium text-stone-600 hover:text-stone-900",
+                    path === "/dashboard" && "bg-stone-900 text-stone-50 hover:bg-stone-800"
                   )}
                 >
                   Dashboard
@@ -172,7 +167,7 @@ function MobileNav() {
               <Menu className="h-6 w-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+          <SheetContent side="right" className="w-80 sm:w-100">
             <SheetHeader className="mb-6 text-left">
               <SheetTitle className="text-blue-600 font-bold text-xl">Gatherly</SheetTitle>
             </SheetHeader>

@@ -70,7 +70,7 @@ export default function CreateEventForm() {
       }
       const { data: { data: { event } } } = await apiClient.post("/api/events/create", {
         ...data,
-        image:eventUrl
+        image: eventUrl
       })
       console.log("data", event)
 
@@ -87,19 +87,19 @@ export default function CreateEventForm() {
   return (
     <div className="max-w-2xl mx-auto p-6 bg-background border rounded-lg border-black/50">
       <h2 className="text-3xl font-bold mb-6 text-center">Create New Event</h2>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 ">
-        
+
         {/* Event Title */}
         <div className="space-y-2">
           <Label htmlFor="title">Event Title</Label>
-          <Input 
-            id="title" 
-            placeholder="e.g. Next.js Conf 2026" 
-            {...register("title", { 
-              required: "Title is required", 
+          <Input
+            id="title"
+            placeholder="e.g. Next.js Conf 2026"
+            {...register("title", {
+              required: "Title is required",
               minLength: { value: 2, message: "Title must be at least 2 characters" }
-            })} 
+            })}
           />
           {errors.title && (
             <p className="text-sm text-red-500">{errors.title.message}</p>
@@ -108,7 +108,7 @@ export default function CreateEventForm() {
 
         {/* Category & Date Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
+
           {/* Category - Manual Validation in Rules */}
           <div className="space-y-2">
             <Label>Category</Label>
@@ -180,10 +180,10 @@ export default function CreateEventForm() {
         {/* Location */}
         <div className="space-y-2">
           <Label htmlFor="location">Location</Label>
-          <Input 
-            id="location" 
-            placeholder="e.g. Convention Center, Hall A" 
-            {...register("location", { required: "Location is required" })} 
+          <Input
+            id="location"
+            placeholder="e.g. Convention Center, Hall A"
+            {...register("location", { required: "Location is required" })}
           />
           {errors.location && (
             <p className="text-sm text-red-500">{errors.location.message}</p>
@@ -194,17 +194,17 @@ export default function CreateEventForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <Label htmlFor="price">Price (INR)</Label>
-            <Input 
-              id="price" 
-              type="number" 
-              placeholder="1000 (INR)" 
+            <Input
+              id="price"
+              type="number"
+              placeholder="1000 (INR)"
               min="0"
               step="1"
-              {...register("price", { 
+              {...register("price", {
                 required: "Price is required",
                 min: { value: 0, message: "Price cannot be negative" },
-                valueAsNumber: true 
-              })} 
+                valueAsNumber: true
+              })}
             />
             {errors.price && (
               <p className="text-sm text-red-500">{errors.price.message}</p>
@@ -213,16 +213,16 @@ export default function CreateEventForm() {
 
           <div className="space-y-2">
             <Label htmlFor="totalSeats">Total Seats</Label>
-            <Input 
-              id="totalSeats" 
-              type="numbe r" 
-              placeholder="100" 
+            <Input
+              id="totalSeats"
+              type="numbe r"
+              placeholder="100"
               min="1"
-              {...register("totalSeats", { 
+              {...register("totalSeats", {
                 required: "Total seats is required",
                 min: { value: 1, message: "Must have at least 1 seat" },
                 valueAsNumber: true // Replaces z.coerce.number()
-              })} 
+              })}
             />
             {errors.totalSeats && (
               <p className="text-sm text-red-500">{errors.totalSeats.message}</p>
@@ -233,14 +233,14 @@ export default function CreateEventForm() {
         {/* Description */}
         <div className="space-y-2">
           <Label htmlFor="description">Description</Label>
-          <Textarea 
-            id="description" 
-            placeholder="Describe your event..." 
+          <Textarea
+            id="description"
+            placeholder="Describe your event..."
             className="h-32"
-            {...register("description", { 
+            {...register("description", {
               required: "Description is required",
               minLength: { value: 10, message: "Description must be at least 10 characters" }
-            })} 
+            })}
           />
           {errors.description && (
             <p className="text-sm text-red-500">{errors.description.message}</p>
@@ -249,7 +249,7 @@ export default function CreateEventForm() {
 
         <div className="space-y-2">
           <Label>Event Image</Label>
-          <Activity mode={ eventUrl ? "hidden" : "visible" }>
+          <Activity mode={eventUrl ? "hidden" : "visible"}>
             <CldUploadWidget
               onSuccess={(result) => {
                 if (typeof result.info === "string") {
@@ -259,7 +259,7 @@ export default function CreateEventForm() {
                 }
               }}
               uploadPreset={ENV.cldUploadPreset}
-              >
+            >
               {({ open }) => {
                 return (
                   <Button
@@ -269,7 +269,7 @@ export default function CreateEventForm() {
                     onClick={() => open()}
                     disabled={isSubmitting}
                   >
-                    <UploadIcon className="mr-2 h-4 w-4"/> Upload Event Image
+                    <UploadIcon className="mr-2 h-4 w-4" /> Upload Event Image
                   </Button>
                 )
               }}
@@ -290,7 +290,7 @@ export default function CreateEventForm() {
             </div>
           </Activity>
         </div>
-        
+
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
             <>
